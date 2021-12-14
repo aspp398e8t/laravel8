@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\FrontController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FrontController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,20 +20,18 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::get('/', [FrontController::class, 'index']);
 
-Route::get('/hello', [FrontController::class, 'hello']);
 
-Route::get('/news', [FrontController::class, 'news']);
+// Route::get('/news', [FrontController::class, 'newslist']);
 
-Route::get('/news/{id}', [FrontController::class, 'newsContent']);
+// Route::get('/news/{id}', [FrontController::class, 'newsContent']);
 
-Route::get('/createNews', [FrontController::class, 'createNews']);
-
-Route::get('/updateNews/{id}', [FrontController::class, 'updateNews']);
-
-Route::get('/deleteNews/{id}', [FrontController::class, 'deleteNews']);
+Route::prefix('/news')->group(function () {
+    Route::get('/', [FrontController::class, 'newslist']);
+    Route::get('/{id}', [FrontController::class, 'newsContent']);
+});
 
 Route::post('/contact', [FrontController::class, 'contact']);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
