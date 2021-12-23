@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
+
     {!! htmlScriptTagJsApi() !!}
+
     <!-- bootstrap Core CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <!-- font-awesom Core CSS -->
@@ -25,7 +27,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="{{asset('img/logo.svg')}}" width="106" alt="">
+                <img src="{{asset('images/logo.svg')}}" width="106" alt=""href="{{asset('/index')}}">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,13 +36,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item d-flex justify-content-center">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link" href="{{route('news.list')}}">news</a>
                     </li>
                     <li class="nav-item d-flex justify-content-center">
-                        <a class="nav-link" href="#">Portfolio</a>
+                        <a class="nav-link" href="{{asset('facility')}}">facility</a>
                     </li>
                     <li class="nav-item d-flex justify-content-center">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="{{route('products.index')}}">product</a>
                     </li>
                     <li class="nav-item d-flex justify-content-center">
                         <a class="nav-link" href="#">Contact</a>
@@ -55,7 +57,7 @@
                                 <i class="fas fa-user-circle"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="./login.html">Login</a>
+                                <a class="dropdown-item" href="{{asset('/login')}}">Login</a>
                             </div>
                         </div>
                     </li>
@@ -63,6 +65,8 @@
             </div>
         </div>
     </nav>
+
+
     <main>
         @yield('main')
     </main>
@@ -130,7 +134,7 @@
             </div>
         </div>
     </footer>
-    
+
 
 
 

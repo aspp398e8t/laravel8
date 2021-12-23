@@ -1,12 +1,14 @@
 <?php
 
-
+use Doctrine\DBAL\Driver\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\FrontController;
-use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ToolboxController;
+use App\Http\Controllers\FacilityController;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,47 +21,45 @@ use App\Http\Controllers\ToolboxController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('index');
-// });
-Route::get('/', [FrontController::class, 'index']);
+Route::get('/', [FrontController::class, 'index'])->name('index');
 
-
-// Route::get('/news', [FrontController::class, 'newslist']);
-
-// Route::get('/news/{id}', [FrontController::class, 'newsContent']);
-
-Route::prefix('/news')->group(function () {
-    Route::get('/', [FrontController::class, 'newslist']);
-    Route::get('/{id}', [FrontController::class, 'newsContent']);
+Route::prefix('news')->group(function () {
+    Route::get('/', [FrontController::class, 'newsList'])->name('news.list');
+    Route::get('/{id}', [FrontController::class, 'newsContent'])->name('news.content');
 });
 
-Route::post('/contact', [FrontController::class, 'contact']);
+Route::get('facility', [FrontController::class, 'facility'])->name('facility');
+
+Route::post('/contact', [FrontController::class, 'contact'])->name('contact');
 
 Auth::routes();
-
+//後台
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// 後台
 Route::prefix('/admin')->group(function () {
-    // 最新消息
-    Route::prefix('/news')->middleware(['auth'])->group(function () {
+
+    Route::prefix('/news')->group(function () {
         Route::get('/', [NewsController::class, 'index'])->name('news.index');
         Route::get('/create', [NewsController::class, 'create'])->name('news.create');
-        Route::post('/', [NewsController::class, 'store'])->name('news.store');
+        Route::post('/store', [NewsController::class, 'store'])->name('news.store');
         Route::get('/{id}/edit', [NewsController::class, 'edit'])->name('news.edit');
         Route::patch('/{id}', [NewsController::class, 'update'])->name('news.update');
         Route::delete('/{id}', [NewsController::class, 'destroy'])->name('news.destroy');
     });
 
-    Route::prefix('facility')->group(function () {
+    Route::prefix('/facility')->group(function () {
         Route::get('/', [FacilityController::class, 'index'])->name('facility.index');
         Route::get('/create', [FacilityController::class, 'create'])->name('facility.create');
-        Route::post('/', [FacilityController::class, 'store'])->name('facility.store');
+        Route::post('/store', [FacilityController::class, 'store'])->name('facility.store');
         Route::get('/{id}/edit', [FacilityController::class, 'edit'])->name('facility.edit');
         Route::patch('/{id}', [FacilityController::class, 'update'])->name('facility.update');
         Route::delete('/{id}', [FacilityController::class, 'destroy'])->name('facility.destroy');
     });
+
+    // Route::resource('/product',ProductController::class);
+
+    Route::resource('/products', ProductController::class);
+    Route::delete('/product-image', [ProductController::class, 'imageDelete'])->name('product.image_delete');
 
     Route::post('/image-upload', [ToolboxController::class, 'imageUpload'])->name('tool.image_upload');
 });
