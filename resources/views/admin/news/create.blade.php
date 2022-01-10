@@ -7,8 +7,8 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/admin">首頁</a></li>
-            <li class="breadcrumb-item"><a href="/admin/news">最新消息管理</a></li>
+            <li class="breadcrumb-item"><a href="{{asset('/admin')}}">首頁</a></li>
+            <li class="breadcrumb-item"><a href="{{route('news.index')}}">最新消息管理</a></li>
             <li class="breadcrumb-item active" aria-current="page">新增消息</li>
         </ol>
     </nav>
@@ -18,7 +18,7 @@
                 <h2 class="card-header pt-3 pb-2">最新消息 - 新增</h2>
 
                 <div class="card-body">
-                    <form method="POST" action="{{route('news.store')}}">
+                    <form method="POST" action="{{ route('news.store') }}">
                         @csrf
                         <div class="form-group row py-2">
                             <label for="title" class="col-sm-2 col-form-label">標題</label>

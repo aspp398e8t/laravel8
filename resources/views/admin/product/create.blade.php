@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('css')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" rel="stylesheet">
 
 @endsection
 
@@ -8,7 +7,7 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/admin">首頁</a></li>
+            <li class="breadcrumb-item"><a href="{{asset('/admin')}}">首頁</a></li>
             <li class="breadcrumb-item"><a href="{{route('products.index')}}">產品管理</a></li>
             <li class="breadcrumb-item active" aria-current="page">新增產品</li>
         </ol>
@@ -19,8 +18,19 @@
                 <h2 class="card-header pt-3 pb-2">產品 - 新增</h2>
 
                 <div class="card-body">
-                    <form method="POST" action="{{route('products.store')}}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
                         @csrf
+                        <div class="form-group row py-2">
+                            <label for="category" class="col-sm-2 col-form-label">類別<span class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="product_category_id" id="category" required>
+                                    <option value="" hidden>請選擇類別</option>
+                                    @foreach ($productCategories as $productCategory)
+                                    <option value="{{$productCategory->id}}">{{$productCategory->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row py-2">
                             <label for="name" class="col-sm-2 col-form-label">名稱<span class="text-danger">*</span></label>
                             <div class="col-sm-10">
@@ -65,37 +75,5 @@
 @endsection
 
 @section('js')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
 
-            $(document).ready(function() {
-                $('#content').summernote({
-                    callbacks: {
-                        onImageUpload: function(files) {
-                            // upload image to server and create imgNode...
-                            console.log(files);
-                            let url = '{{route('tool.image_upload')}}';
-                            let formData = new FormData();
-                            formData.append('_token','{{csrf_token()}}');
-                            formData.append('image',files[0]);
-
-                            fetch(url,{
-                                'method':'post',
-                                'body':formData
-                            })
-                            .then(function(response){
-                                return response.text();
-                            })
-                            .then(function(data){
-                                console.log(data);
-                                $('#content').summernote('insertImage',data);
-                            })
-                            
-                        }
-                    }
-                });
-            });
-                    
-    </script>
-    
 @endsection

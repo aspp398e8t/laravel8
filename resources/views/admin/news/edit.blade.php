@@ -7,8 +7,8 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/admin">首頁</a></li>
-            <li class="breadcrumb-item"><a href="/admin/news">最新消息管理</a></li>
+            <li class="breadcrumb-item"><a href="{{asset('/admin')}}">首頁</a></li>
+            <li class="breadcrumb-item"><a href="{{route('news.index')}}">最新消息管理</a></li>
             <li class="breadcrumb-item active" aria-current="page">編輯消息</li>
         </ol>
     </nav>
@@ -18,7 +18,7 @@
                 <h2 class="card-header pt-3 pb-2">最新消息 - 編輯</h2>
 
                 <div class="card-body">
-                    <form method="POST" action="{{route('news.update',['id'=>$news->id])}}">
+                    <form method="POST" action="{{route('news.update',['id' => $news->id])}}">
                         @csrf
                         @method('PATCH')
                         <div class="form-group row py-2">
@@ -33,17 +33,16 @@
                                 <input type="date" class="form-control" id="date" name="date" value="{{$news->date}}" required>
                             </div>
                         </div>
-                        
                         <div class="form-group row py-2">
-                            <label for="content" class="col-sm-2 col-form-label">目前圖片</label>
+                            <label for="img" class="col-sm-2 col-form-label">目前圖片</label>
                             <div class="col-sm-10">
-                            <img src="{{$news->image_url}}" alt="" width="200" >
+                                <img src="{{$news->image_url}}" alt="" width="200">
                             </div>
                         </div>
                         <div class="form-group row py-2">
                             <label for="img" class="col-sm-2 col-form-label">圖片</label>
                             <div class="col-sm-10">
-                                <input value="{{$news->image_url}}" type="text" class="form-control" id="img" name="image_url" required>
+                                <input type="text" class="form-control" id="img" name="image_url" value="{{$news->image_url}}" required>
                             </div>
                         </div>
                         <div class="form-group row py-2">

@@ -15,9 +15,9 @@ class FacilityController extends Controller
      */
     public function index()
     {
-        //
-        $facilities = Facility::orderBy('title', 'asc')->get();
-
+        // 降冪 desc  升冪 asc
+        $facilities = Facility::orderBy('title','asc')->get();
+        
         return view('admin.facility.index', compact('facilities'));
     }
 
@@ -39,13 +39,17 @@ class FacilityController extends Controller
      */
     public function store(Request $request)
     {
+        // Storage::put('路徑',檔案);
+        // $path 可以得到相對於local(storage/app/public)資料夾的路徑
         $path = Storage::put('/', $request->image_url);
 
-        Facility::create([
+        $facility = Facility::create([
             'title' => $request->title,
             'content' => $request->content,
             'image_url' => $path
         ]);
+
+        dd($facility);
 
         return redirect()->route('facility.index');
     }
@@ -70,7 +74,8 @@ class FacilityController extends Controller
     public function edit($id)
     {
         $facility = Facility::find($id);
-        return view('admin.facility.edit', compact('facility'));
+
+        return view('admin.facility.edit',compact('facility'));
     }
 
     /**
@@ -83,19 +88,23 @@ class FacilityController extends Controller
     public function update(Request $request, $id)
     {
         $facility = Facility::find($id);
-        if ($request->hasFile('image_url')) {
-            // 刪除圖片
+        // 判斷是否有檔案
+        // $request->hasFile(name)
+        if($request->hasFile('image_url')){
+            // 刪除舊圖片
             Storage::delete($facility->image_url);
             // 儲存新圖片
-            $path = Storage::put('/', $request->image_url);
-        } else {
+            $path = Storage::put('/',$request->image_url);
+        }else{
             $path = $facility->image_url;
         }
+
         $facility->update([
-            'title' => $request->title,
-            'content' => $request->content,
-            'image_url' => $path
+            'title'=>$request->title,
+            'content'=>$request->content,
+            'image_url'=>$path
         ]);
+
         return redirect()->route('facility.index');
     }
 
@@ -107,9 +116,13 @@ class FacilityController extends Controller
      */
     public function destroy($id)
     {
+        // 先找到要刪除的資料
         $facility = Facility::find($id);
+        // 取出圖片檔案的位置，並刪除檔案
         Storage::delete($facility->image_url);
+        // 刪除資料庫內該筆資料
         $facility->delete();
+
         return redirect()->route('facility.index');
     }
 }

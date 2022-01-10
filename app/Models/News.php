@@ -10,5 +10,9 @@ class News extends Model
     use HasFactory;
     protected $table = 'news';
 
-    protected $fillable = ['title', 'date', 'content', 'image_url'];
+    // 可填充
+    protected $fillable = ['title','date','content','image_url'];
+    // 被保護
+    // protected $guarded = ['date'];
+
 }
